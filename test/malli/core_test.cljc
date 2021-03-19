@@ -474,7 +474,12 @@
       (is (= {:type :enum, :children [1 2]}
              (mu/to-map-syntax schema)))
 
-      (is (= [:enum 1 2] (m/form schema)))))
+      (is (= [:enum 1 2] (m/form schema)))
+
+      (testing "values must be distinct"
+        (is (thrown?
+              #?(:clj Exception, :cljs js/Error)
+              (m/schema [:enum :a :b :a]))))))
 
   (testing "maybe schemas"
     (let [schema (m/schema [:maybe int?])]

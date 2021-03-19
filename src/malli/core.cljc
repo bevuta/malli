@@ -923,6 +923,8 @@
       (let [children (vec children)
             schema (set children)
             form (-create-form :enum properties children)]
+        (when-not (= (count children) (count schema))
+          (miu/-fail! ::non-distinct-enum-values {:values children}))
         ^{:type ::schema}
         (reify
           Schema
